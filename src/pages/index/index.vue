@@ -8,51 +8,198 @@
 }
 </route>
 <template>
-  <view
-    class="bg-white overflow-hidden pt-2 px-4"
-    :style="{ marginTop: safeAreaInsets?.top + 'px' }"
-  >
-    <view class="mt-12">
-      <image src="/static/logo.svg" alt="" class="w-28 h-28 block mx-auto" />
+  <view class="bg-[#f9fafb] overflow-hidden" :style="{ marginTop: safeAreaInsets?.top + 'px' }">
+    <view style="min-height: 200px; background-color: #f9fafb">
+      <img
+        src="/static/images/index1.png"
+        alt="Image not found"
+        style="display: block; width: 100%; height: auto; object-fit: contain"
+      />
     </view>
-    <view class="text-center text-4xl main-title-color mt-4">unibest</view>
-    <view class="text-center text-2xl mt-2 mb-8">最好用的 uniapp 开发模板</view>
 
-    <view class="text-justify max-w-100 m-auto text-4 indent mb-2">{{ description }}</view>
-    <view class="text-center mt-8">
-      当前平台是：
-      <text class="text-green-500">{{ PLATFORM.platform }}</text>
+    <view class="flex items-center pt-8">
+      <view class="mr-4">
+        <view class="mb-4" style="width: 80rpx; height: 4rpx; background-color: #ed6301"></view>
+      </view>
+      <view class="text-left">
+        <h1
+          class="mb-2"
+          style="font-size: 28rpx; font-weight: 500; line-height: 28rpx; color: #d0d0d0"
+        >
+          ABOUT US
+        </h1>
+        <h2
+          class="mb-6"
+          style="font-size: 28rpx; font-weight: 500; line-height: 28rpx; color: #262626"
+        >
+          关于冀弘
+        </h2>
+      </view>
     </view>
-    <view class="text-center mt-4">
-      模板分支是：
-      <text class="text-green-500">base</text>
+
+    <view style="color: #858585" class="text-justify max-w-100 m-auto text-3 indent mb-2 px-6">
+      {{ description1 }}
     </view>
+    <view style="color: #858585" class="text-justify max-w-100 m-auto text-3 indent mb-2 px-6">
+      {{ description2 }}
+    </view>
+
+    <view class="mt-6">
+      <img
+        src="/static/images/index2.png"
+        alt="Image not found"
+        style="display: block; width: 100%; height: auto; object-fit: contain"
+      />
+    </view>
+
+    <view
+      class="mt-6 h-[150rpx] flex flex-row justify-center items-center mx-6 bg-white rounded-sm shadow-sm"
+    >
+      <view class="flex-1 flex flex-col items-center justify-center">
+        <wd-count-to :fontSize="22" :endVal="99" suffix="人" color="#ED6301"></wd-count-to>
+        <view class="text-center text-xs text-gray-500">技术人员</view>
+      </view>
+      <div class="h-8 w-px bg-gray-200"></div>
+      <view class="flex-1 flex flex-col items-center justify-center">
+        <wd-count-to
+          prefix=""
+          :startVal="0"
+          :decimals="0"
+          :endVal="10"
+          :fontSize="22"
+          suffix="年"
+          color="#ED6301"
+        ></wd-count-to>
+        <view class="text-center text-xs text-gray-500">公司历程</view>
+      </view>
+      <div class="h-8 w-px bg-gray-200"></div>
+      <view class="flex-1 flex flex-col items-center justify-center">
+        <wd-count-to
+          prefix=""
+          :startVal="0"
+          :decimals="0"
+          :endVal="239"
+          :fontSize="22"
+          suffix="家"
+          color="#ff5722"
+        ></wd-count-to>
+        <view class="text-center text-xs text-gray-500">合作客户</view>
+      </view>
+      <div class="h-8 w-px bg-gray-200"></div>
+      <view class="flex-1 flex flex-col items-center justify-center">
+        <wd-count-to
+          prefix=""
+          :startVal="0"
+          :decimals="0"
+          :endVal="35"
+          :fontSize="22"
+          suffix="个"
+          color="#ED6301"
+          :duration="2000"
+        ></wd-count-to>
+        <view class="text-center text-xs text-gray-500">取得荣誉</view>
+      </view>
+    </view>
+
+    <view class="flex items-center pt-8">
+      <view class="mr-4">
+        <view class="mb-4" style="width: 80rpx; height: 4rpx; background-color: #ed6301"></view>
+      </view>
+      <view class="text-left">
+        <h1
+          class="mb-2"
+          style="font-size: 28rpx; font-weight: 500; line-height: 28rpx; color: #d0d0d0"
+        >
+          ENGINEERING CASE
+        </h1>
+        <h2
+          class="mb-6"
+          style="font-size: 28rpx; font-weight: 500; line-height: 28rpx; color: #262626"
+        >
+          我们的资质
+        </h2>
+      </view>
+    </view>
+
+    <view class="card-swiper">
+      <wd-swiper
+        autoplay
+        v-model:current="current"
+        :display-multiple-items="2"
+        custom-indicator-class="custom-indicator-class"
+        custom-image-class="custom-image"
+        custom-next-image-class="custom-image-prev"
+        custom-prev-image-class="custom-image-prev"
+        :indicator="{ type: 'dots' }"
+        :list="swiperList"
+        previousMargin="24px"
+        nextMargin="24px"
+      ></wd-swiper>
+    </view>
+    <button @click="run">请求</button>
   </view>
 </template>
 
 <script lang="ts" setup>
-import { TestEnum } from '@/typings'
-import PLATFORM from '@/utils/platform'
-
+import { http, httpGet } from '@/utils/http'
 defineOptions({
   name: 'Home',
 })
 
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()
-const author = ref('菲鸽')
-const description = ref(
-  'unibest 是一个集成了多种工具和技术的 uniapp 开发模板，由 uniapp + Vue3 + Ts + Vite4 + UnoCss + UniUI + VSCode 构建，模板具有代码提示、自动格式化、统一配置、代码片段等功能，并内置了许多常用的基本组件和基本功能，让你编写 uniapp 拥有 best 体验。',
+const description1 = ref(
+  '广东冀弘钢管有限公司位于广东省佛山市高明工业区。成立至今已初具规模，充足的货源，优质的服务，坚若怨石的质量，完蕃的售后服务,在业内有了一定声誉的“特级信用”企业。',
 )
+const description2 = ref(
+  '公司主要经营产品有钢板类簟、螺旋钢篢、焊接钢篢、钢管防腐、熔结环领纷未防腐、钢护简等产品，产品广泛应用于市政工程、供水管道、污水排放、打桩、梁护简、石油天然与输送、热力发电、钢结构、机械制造、建筑工程、公用事业、造船工业、电站等多个方面领域。进行从原材料到产品的出场的100%的合格率，做到客户无忧使用。',
+)
+
+const current = ref<number>(0)
+
+// const res = http.get<any>('/api.php/list/4', {
+//   form: {
+//     appid: 'admin',
+//     timestamp: Date.now(),
+//     signature: '1',
+//   },
+// })
+// console.log(res)
+
+type IFooItem = { name: string }
+const { loading, error, data, run } = useRequest<IFooItem>(() => httpGet('/api.php/list/4'))
+
+const swiperList = ref([
+  'https://registry.npmmirror.com/wot-design-uni-assets/*/files/redpanda.jpg',
+  'https://registry.npmmirror.com/wot-design-uni-assets/*/files/capybara.jpg',
+  'https://registry.npmmirror.com/wot-design-uni-assets/*/files/panda.jpg',
+  'https://registry.npmmirror.com/wot-design-uni-assets/*/files/moon.jpg',
+  'https://registry.npmmirror.com/wot-design-uni-assets/*/files/meng.jpg',
+])
+
 // 测试 uni API 自动引入
-onLoad(() => {
-  console.log(author)
-  console.log(TestEnum.A)
-})
+onLoad(() => {})
 </script>
 
-<style>
+<style lang="scss" scoped>
 .main-title-color {
   color: #d14328;
+}
+
+.card-swiper {
+  --wot-swiper-radius: 0;
+  --wot-swiper-item-padding: 0 24rpx;
+  --wot-swiper-nav-dot-color: #e7e7e7;
+  --wot-swiper-nav-dot-active-color: #4d80f0;
+  padding-bottom: 24rpx;
+  :deep(.custom-indicator-class) {
+    bottom: -16px;
+  }
+  :deep(.custom-image) {
+    border-radius: 12rpx;
+  }
+  :deep(.custom-image-prev) {
+    height: 168px !important;
+  }
 }
 </style>

@@ -32,8 +32,14 @@
       {
         "iconPath": "static/tabbar/example.png",
         "selectedIconPath": "static/tabbar/exampleHL.png",
+        "pagePath": "pages/products/products",
+        "text": "产品"
+      },
+      {
+        "iconPath": "static/tabbar/example.png",
+        "selectedIconPath": "static/tabbar/exampleHL.png",
         "pagePath": "pages/about/about",
-        "text": "关于"
+        "text": "咨询"
       }
     ]
   },
@@ -51,6 +57,13 @@
       "type": "page",
       "style": {
         "navigationBarTitleText": "关于"
+      }
+    },
+    {
+      "path": "pages/products/products",
+      "type": "page",
+      "style": {
+        "navigationBarTitleText": "产品"
       }
     }
   ],
