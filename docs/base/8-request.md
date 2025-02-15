@@ -110,7 +110,7 @@ const { loading, data, run } = useUpload<string>({ user: '菲鸽' })
 上面的 `普通请求` 默认是只有一个请求地址的，在 `.env` 里面配置 `VITE_SERVER_BASEURL`，如下：
 
 ```text
-VITE_SERVER_BASEURL = 'https://ukw0y1.laf.run'
+VITE_SERVER_BASEURL = 'https://8.138.129.19'
 ```
 
 并且在 `src/interceptors/request.ts` 里面有设置：
@@ -151,13 +151,13 @@ export const getFooAPI = (name: string) => {
 - `普通请求` 需要在 `.env` 里面配置 `VITE_SERVER_BASEURL`，用在 `src/interceptors/request.ts` 文件拼接请求地址；而 `多后台地址` 时则用不上，可以删除。
 
 ```text
-VITE_SERVER_BASEURL = 'https://ukw0y1.laf.run'
+VITE_SERVER_BASEURL = 'https://8.138.129.19'
 ```
 
 - `图片上传` 需要在 `.env` 里面配置 `VITE_UPLOAD_BASEURL`:
 
 ```text
-VITE_UPLOAD_BASEURL = 'https://ukw0y1.laf.run/upload'
+VITE_UPLOAD_BASEURL = 'https://8.138.129.19/upload'
 ```
 
 全文完~

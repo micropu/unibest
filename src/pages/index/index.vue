@@ -134,9 +134,72 @@
         :list="swiperList"
         previousMargin="24px"
         nextMargin="24px"
+        imageMode="aspectFit"
       ></wd-swiper>
     </view>
-    <button @click="run">请求</button>
+    <view
+      class="flex flex-col mt-[60rpx]"
+      style="
+        height: 490rpx;
+        background-image: url('/static/images/153@1x.png');
+        background-position: center;
+        background-size: 100% auto;
+      "
+    >
+      <view>
+        <view style="height: 140rpx" class="flex flex-row items-center justify-between">
+          <view class="flex items-center pt-8">
+            <view class="mr-4">
+              <view
+                class="mb-4"
+                style="width: 80rpx; height: 4rpx; background-color: #ed6301"
+              ></view>
+            </view>
+            <view class="text-left">
+              <h1
+                class="mb-2"
+                style="font-size: 26rpx; font-weight: 500; line-height: 26rpx; color: #d0d0d0"
+              >
+                PRODUCT CENTER
+              </h1>
+              <h2
+                class="mb-4"
+                style="font-size: 26rpx; font-weight: 500; line-height: 26rpx; color: #d0d0d0"
+              >
+                产品中心
+              </h2>
+            </view>
+          </view>
+          <view class="flex flex-row items-center">
+            <wd-button size="small" type="warning" @click="prevProduct">上一个</wd-button>
+            <wd-button size="small" type="warning" @click="nextProduct" style="margin-left: 20rpx">
+              下一个
+            </wd-button>
+          </view>
+        </view>
+      </view>
+      <view class="w-full flex flex-row pt-[40rpx]" style="flex: 1">
+        <view
+          style="width: 42%; height: 100%; background-color: #fff"
+          class="flex flex-col items-center justify-center"
+        >
+          <text class="text-sm font-bold" style="font-size: 24rpx; color: #262626">
+            {{ products[currentIndex]?.title }}
+          </text>
+          <text class="pt-[10rpx] px-4 truncate-text" style="font-size: 16rpx; color: #8d8d8d">
+            {{ products[currentIndex]?.description }}
+          </text>
+          <view class="pt-2"><wd-button type="warning" size="small">了解详情</wd-button></view>
+        </view>
+
+        <view style="width: 58%; height: 100%" v-if="products[currentIndex]?.ico">
+          <img
+            :src="`${VITE_SERVER_BASEURL}${products[currentIndex]?.ico}`"
+            style="width: 100%; height: 100%; object-fit: cover"
+          />
+        </view>
+      </view>
+    </view>
   </view>
 </template>
 
@@ -156,18 +219,14 @@ const description2 = ref(
 )
 
 const current = ref<number>(0)
-
-// const res = http.get<any>('/api.php/list/4', {
-//   form: {
-//     appid: 'admin',
-//     timestamp: Date.now(),
-//     signature: '1',
-//   },
-// })
-// console.log(res)
-
 type IFooItem = { name: string }
 const { loading, error, data, run } = useRequest<IFooItem>(() => httpGet('/api.php/list/4'))
+const {
+  loading: loading2,
+  error: error2,
+  data: data2,
+  run: run2,
+} = useRequest<IFooItem>(() => httpGet('/api.php/list/5'))
 
 const swiperList = ref([
   'https://registry.npmmirror.com/wot-design-uni-assets/*/files/redpanda.jpg',
@@ -176,9 +235,46 @@ const swiperList = ref([
   'https://registry.npmmirror.com/wot-design-uni-assets/*/files/moon.jpg',
   'https://registry.npmmirror.com/wot-design-uni-assets/*/files/meng.jpg',
 ])
-
+const VITE_SERVER_BASEURL = 'http://8.138.129.19'
 // 测试 uni API 自动引入
-onLoad(() => {})
+onLoad(async () => {
+  const res = await run()
+  // 提取 ico 字段到 swiperList
+  swiperList.value = []
+  swiperList.value = res.map((item) => `${VITE_SERVER_BASEURL}${item.ico}`)
+  products.value = await run2()
+  // console.log(products.value)
+})
+
+const products = ref([]) // 产品列表
+const currentIndex = ref(0) // 当前产品索引
+// 更新产品信息
+function updateProduct() {
+  if (products.value.length > 0) {
+    const currentProduct = products.value[currentIndex.value]
+    console.log(currentProduct.title) // 显示当前产品标题
+  }
+}
+
+// 切换到下一个产品
+function nextProduct() {
+  if (currentIndex.value < products.value.length - 1) {
+    currentIndex.value++
+  } else {
+    currentIndex.value = 0 // 循环到第一个产品
+  }
+  updateProduct()
+}
+
+// 切换到上一个产品
+function prevProduct() {
+  if (currentIndex.value > 0) {
+    currentIndex.value--
+  } else {
+    currentIndex.value = products.value.length - 1 // 循环到最后一个产品
+  }
+  updateProduct()
+}
 </script>
 
 <style lang="scss" scoped>
@@ -201,5 +297,14 @@ onLoad(() => {})
   :deep(.custom-image-prev) {
     height: 168px !important;
   }
+}
+
+.truncate-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* 显示的行数 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
 }
 </style>
