@@ -171,10 +171,17 @@
             </view>
           </view>
           <view class="flex flex-row items-center">
-            <wd-button size="small" type="warning" @click="prevProduct">上一个</wd-button>
-            <wd-button size="small" type="warning" @click="nextProduct" style="margin-left: 20rpx">
-              下一个
-            </wd-button>
+            <view class="mx-2">
+              <wd-icon name="arrow-left" size="22px" @click="prevProduct" color="#909090"></wd-icon>
+            </view>
+            <view class="mx-2">
+              <wd-icon
+                name="arrow-right"
+                size="22px"
+                @click="prevProduct"
+                color="#909090"
+              ></wd-icon>
+            </view>
           </view>
         </view>
       </view>
@@ -183,7 +190,10 @@
           style="width: 42%; height: 100%; background-color: #fff"
           class="flex flex-col items-center justify-center"
         >
-          <text class="text-sm font-bold" style="font-size: 24rpx; color: #262626">
+          <text
+            class="text-sm font-bold truncate-text1 px-4"
+            style="font-size: 24rpx; color: #262626"
+          >
             {{ products[currentIndex]?.title }}
           </text>
           <text class="pt-[10rpx] px-4 truncate-text" style="font-size: 16rpx; color: #8d8d8d">
@@ -212,7 +222,7 @@ defineOptions({
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()
 const description1 = ref(
-  '广东冀弘钢管有限公司位于广东省佛山市高明工业区。成立至今已初具规模，充足的货源，优质的服务，坚若怨石的质量，完蕃的售后服务,在业内有了一定声誉的“特级信用”企业。',
+  '广东冀弘钢管有限公司位于广东省佛山市高明工业区。成立至今已初具规模，充足的货源，优质的服务，坚若怨石的质量，完蕃的售后服务,在业内有了一定声誉的"特级信用"企业。',
 )
 const description2 = ref(
   '公司主要经营产品有钢板类簟、螺旋钢篢、焊接钢篢、钢管防腐、熔结环领纷未防腐、钢护简等产品，产品广泛应用于市政工程、供水管道、污水排放、打桩、梁护简、石油天然与输送、热力发电、钢结构、机械制造、建筑工程、公用事业、造船工业、电站等多个方面领域。进行从原材料到产品的出场的100%的合格率，做到客户无忧使用。',
@@ -306,5 +316,20 @@ function prevProduct() {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: normal;
+}
+
+.truncate-text1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* 显示的行数 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+.circular-button {
+  width: 50rpx;
+  height: 50rpx;
+  border-radius: 50%;
 }
 </style>
